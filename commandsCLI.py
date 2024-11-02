@@ -6,12 +6,13 @@ import traceback
 
 shHostname = "show run | i hostname"
 shLicSumm = "show license summary"
+shPlt = "show plat hard qfp active feature ipsec state"
 
 def complCheck(validIPs, username, netDevice):
     # This function is to check for compliance
 
     for validDeviceIP in validIPs:
-        missingConfig1 = False
+
         try:
             validDeviceIP = validDeviceIP.strip()
             currentNetDevice = {
@@ -42,6 +43,11 @@ def complCheck(validIPs, username, netDevice):
                     shLicSummOut = sshAccess.send_command(shLicSumm)
                     authLog.info(f"Automation successfully ran the command:{shLicSumm}\n{shHostnameOut}{shLicSumm}\n{shLicSummOut}")
                     print(f"{shHostnameOut}{shLicSumm}\n{shLicSummOut}")
+
+                    print(f"INFO: Taking a \"{shPlt}\" for device: {validDeviceIP}")
+                    shPltOut = sshAccess.send_command(shPlt)
+                    authLog.info(f"Automation successfully ran the command:{shPlt}\n{shHostnameOut}{shPlt}\n{shPltOut}")
+                    print(f"{shHostnameOut}{shPlt}\n{shPltOut}")
                         
                     if "DNA_HSEC" in shLicSummOut:
                         authLog.info(f"Device {validDeviceIP} has the DNA_SEC license")
